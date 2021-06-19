@@ -38,13 +38,21 @@ func createBlock(data string) *block {
 	return &newBlock
 }
 
+func (b *blockchain) AddBlock(data string) {
+	b.blocks = append(b.blocks, createBlock(data))
+}
+
 // GetBlockchain for initalize instance or return used blockchain
 func GetBlockchain() *blockchain {
 	if b == nil {
 		once.Do(func() {
 			b = &blockchain{}
-			b.blocks = append(b.blocks, createBlock("Genesis Block"))
+			b.AddBlock("Genesis")
 		})
 	}
 	return b
+}
+
+func (b *blockchain) AllBlocks() []*block {
+	return b.blocks
 }
