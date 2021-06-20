@@ -5,3 +5,5 @@
 - #02 Singleton pattern
 
 - #03 Create, Add, Get Blockchain
+
+- #04 Set up for server
