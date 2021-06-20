@@ -15,3 +15,5 @@
   > Use variable
   > Use partial, pages merge
   > get form data when post method
+
+- #07 Refactoring for clean main.go
