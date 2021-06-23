@@ -36,3 +36,5 @@
 
   > Gorilla/mux는 standard package가 아니라 third party package인데
   > ServeMux보다 효율이 좋다. 예를 들면, route의 변수를 사용해서 params를 가져오는 등
+
+- #13 Get a single block with gorillamux

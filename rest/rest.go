@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/chiwon99881/chyocoin/blockchain"
 	"github.com/chiwon99881/chyocoin/utils"
@@ -54,7 +55,7 @@ func documentation(rw http.ResponseWriter, r *http.Request) {
 			Payload:     "data:string",
 		},
 		{
-			URL:         url("/blocks/{id}"),
+			URL:         url("/blocks/{height}"),
 			Method:      "GET",
 			Description: "Get a single block",
 		},
@@ -81,7 +82,10 @@ func blocks(rw http.ResponseWriter, r *http.Request) {
 
 func block(rw http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	id := vars["id"]
+	height, err := strconv.Atoi(vars["height"])
+	utils.HandleError(err)
+	block := blockchain.GetBlockchain().Getblock(height)
+	json.NewEncoder(rw).Encode(block)
 }
 
 // Start of rest.go
@@ -90,7 +94,7 @@ func Start(aPort int) {
 	port = fmt.Sprintf(":%d", aPort)
 	router.HandleFunc("/", documentation).Methods("GET")
 	router.HandleFunc("/blocks", blocks).Methods("GET", "POST")
-	router.HandleFunc("/blocks/{id:[0-9]+}", block).Methods("GET")
+	router.HandleFunc("/blocks/{height:[0-9]+}", block).Methods("GET")
 	fmt.Printf("Server listening on http://localhost%s\n", port)
 	log.Fatal(http.ListenAndServe(port, router))
 }
