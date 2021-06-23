@@ -17,3 +17,5 @@
   > get form data when post method
 
 - #07 Refactoring for clean main.go
+
+- #08 REST API with json
