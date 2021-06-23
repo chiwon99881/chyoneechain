@@ -8,6 +8,7 @@ import (
 
 	"github.com/chiwon99881/chyocoin/blockchain"
 	"github.com/chiwon99881/chyocoin/utils"
+	"github.com/gorilla/mux"
 )
 
 var port string
@@ -52,6 +53,11 @@ func documentation(rw http.ResponseWriter, r *http.Request) {
 			Description: "Add a block",
 			Payload:     "data:string",
 		},
+		{
+			URL:         url("/blocks/{id}"),
+			Method:      "GET",
+			Description: "Get a single block",
+		},
 	}
 	rw.Header().Add("Content-Type", "application/json")
 	// b, err := json.Marshal(data)
@@ -73,12 +79,18 @@ func blocks(rw http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func block(rw http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+}
+
 // Start of rest.go
 func Start(aPort int) {
-	handler := http.NewServeMux()
+	router := mux.NewRouter()
 	port = fmt.Sprintf(":%d", aPort)
-	handler.HandleFunc("/", documentation)
-	handler.HandleFunc("/blocks", blocks)
+	router.HandleFunc("/", documentation).Methods("GET")
+	router.HandleFunc("/blocks", blocks).Methods("GET", "POST")
+	router.HandleFunc("/blocks/{id:[0-9]+}", block).Methods("GET")
 	fmt.Printf("Server listening on http://localhost%s\n", port)
-	log.Fatal(http.ListenAndServe(port, handler))
+	log.Fatal(http.ListenAndServe(port, router))
 }
