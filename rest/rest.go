@@ -17,6 +17,10 @@ var port string
 // URL of custom type
 type url string
 
+type errorResponse struct {
+	ErrorMessage string `json:"errorMessage,omitempty"`
+}
+
 // AddBlockBody of body in post request
 type addBlockBody struct {
 	Message string `json:"message"`
@@ -84,8 +88,12 @@ func block(rw http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	height, err := strconv.Atoi(vars["height"])
 	utils.HandleError(err)
-	block := blockchain.GetBlockchain().Getblock(height)
-	json.NewEncoder(rw).Encode(block)
+	block, err := blockchain.GetBlockchain().Getblock(height)
+	if err != nil {
+		json.NewEncoder(rw).Encode(errorResponse{ErrorMessage: fmt.Sprint(err)})
+	} else {
+		json.NewEncoder(rw).Encode(block)
+	}
 }
 
 // Start of rest.go

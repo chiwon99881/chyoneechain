@@ -2,6 +2,7 @@ package blockchain
 
 import (
 	"crypto/sha256"
+	"errors"
 	"fmt"
 	"sync"
 )
@@ -59,6 +60,10 @@ func (b *blockchain) AllBlocks() []*Block {
 	return b.blocks
 }
 
-func (b *blockchain) Getblock(height int) *Block {
-	return b.blocks[height-1]
+func (b *blockchain) Getblock(height int) (*Block, error) {
+	currentMaxHeight := len(b.blocks)
+	if height > currentMaxHeight {
+		return nil, errors.New("height is too larger than current max height")
+	}
+	return b.blocks[height-1], nil
 }
