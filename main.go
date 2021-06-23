@@ -7,9 +7,18 @@ import (
 	"net/http"
 )
 
+//URL of custom type
+type URL string
+
+// MarshalText of URL receiver
+func (u URL) MarshalText() ([]byte, error) {
+	url := fmt.Sprintf("http://localhost%s%s", port, u)
+	return []byte(url), nil
+}
+
 // URLDescription struct
 type URLDescription struct {
-	URL         string `json:"url"`
+	URL         URL    `json:"url"`
 	Method      string `json:"method"`
 	Description string `json:"description"`
 	Payload     string `json:"payload,omitempty"`
@@ -20,12 +29,12 @@ const port string = ":4000"
 func documentation(rw http.ResponseWriter, r *http.Request) {
 	data := []URLDescription{
 		{
-			URL:         "/",
+			URL:         URL("/"),
 			Method:      "GET",
 			Description: "See Documentation",
 		},
 		{
-			URL:         "/blocks",
+			URL:         URL("/blocks"),
 			Method:      "POST",
 			Description: "Add a block",
 			Payload:     "data:string",

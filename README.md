@@ -19,3 +19,5 @@
 - #07 Refactoring for clean main.go
 
 - #08 REST API with json
+
+- #09 Interface
