@@ -23,3 +23,11 @@
 - #09 Interface
 
 - #10 Handle GET / POST request
+
+- #11 DefaultServeMux
+
+  > ServeMux는 http request가 들어왔을 때, 이 아이가 어떤 handler를 실행시킬 지 파악을 한 후
+  > 해당 handler를 연결 시켜주는 중간다리 역할을 하는 아이이다. 근데 이 아이가 커스텀으로 새로 지정하지 않고
+  > ListenAndServe()에 대해 handler argument에 nil을 넣으면 DefaultServeMux를 사용하는데,
+  > 이런 경우 포트가 다르더라도 같은 handler를 사용하기 때문에 같은 엔드포인트가 두 개 이상이면 에러를 발생시킨다.
+  > 따라서 이번 commit은 그 에러를 해결하기 위해 나만의 커스텀 ServeMux를 만들었다.
