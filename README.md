@@ -21,3 +21,5 @@
 - #08 REST API with json
 
 - #09 Interface
+
+- #10 Handle GET / POST request
