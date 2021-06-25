@@ -53,3 +53,7 @@
 - #18 CLI Part 3
 
   > Only used flag not FlagSet
+
+- #19 Bolt for database
+
+  > Bolt는 key:value쌍의 Go를 위한 Database이다.
