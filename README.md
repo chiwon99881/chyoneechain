@@ -57,3 +57,5 @@
 - #19 Bolt for database
 
   > Bolt는 key:value쌍의 Go를 위한 Database이다.
+
+- #20 Divide block & chain for Bolt database
