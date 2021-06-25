@@ -1,9 +1,29 @@
 package main
 
 import (
-	"github.com/chiwon99881/chyocoin/rest"
+	"fmt"
+	"os"
 )
 
+func usage() {
+	fmt.Printf("Welcome to chyoneecoin\n\n")
+	fmt.Printf("Please use the following commands:\n\n")
+	fmt.Printf("explorer:    Start the HTML explorer\n")
+	fmt.Printf("rest:        Start the REST API(recommanded)\n")
+	os.Exit(0)
+}
+
 func main() {
-	rest.Start(4000)
+	if len(os.Args) < 2 {
+		usage()
+	}
+
+	switch os.Args[1] {
+	case "rest":
+		fmt.Println("HI REST")
+	case "explorer":
+		fmt.Println("HI EXPLORER")
+	default:
+		usage()
+	}
 }
