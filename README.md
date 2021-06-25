@@ -40,3 +40,5 @@
 - #13 Get a single block with gorillamux
 
 - #14 Handling error with json response
+
+- #15 Middleware and adapter pattern
