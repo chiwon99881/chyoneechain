@@ -47,3 +47,5 @@
 
   > os.Args는 command line에 입력한 인자를 받아오는 함수 예를 들어,
   > go run main.go AAA 라고 입력하면 [go run main.go, AAA]가 os.Args에 담기게 된다.
+
+- #17 CLI Part 2 (flag)
