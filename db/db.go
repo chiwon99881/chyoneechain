@@ -1,8 +1,6 @@
 package db
 
 import (
-	"fmt"
-
 	"github.com/boltdb/bolt"
 	"github.com/chiwon99881/chyocoin/utils"
 )
@@ -34,7 +32,6 @@ func DB() *bolt.DB {
 
 // SaveBlock is saved of block in blockchain DB
 func SaveBlock(hash string, data []byte) {
-	fmt.Printf("Saving Block %s\n Data: %b\n", hash, data)
 	err := DB().Update(func(t *bolt.Tx) error {
 		bucket := t.Bucket([]byte(blocksBucket))
 		err := bucket.Put([]byte(hash), data)

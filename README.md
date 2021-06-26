@@ -61,3 +61,8 @@
 - #20 Divide block & chain for Bolt database
 
 - #21 Create and Save block in database
+
+- #22 See what data saved with boltbrowser
+
+  > go get github.com/br0xen/boltbrowser
+  > go get github.com/evnix/boltdbweb
