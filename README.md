@@ -68,3 +68,5 @@
   > go get github.com/evnix/boltdbweb
 
 - #23 Restore our database Part (blockchain)
+
+- #24 Restore our database Part (block) and find one block

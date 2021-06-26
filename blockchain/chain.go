@@ -1,8 +1,7 @@
 package blockchain
 
 import (
-	"bytes"
-	"encoding/gob"
+	"fmt"
 	"sync"
 
 	"github.com/chiwon99881/chyocoin/db"
@@ -18,8 +17,7 @@ var b *blockchain
 var once sync.Once
 
 func (b *blockchain) restore(data []byte) {
-	decoder := gob.NewDecoder(bytes.NewReader(data))
-	utils.HandleError(decoder.Decode(b))
+	utils.FromBytes(b, data)
 }
 
 func (b *blockchain) persist() {
@@ -46,5 +44,6 @@ func Blockchain() *blockchain {
 			}
 		})
 	}
+	fmt.Println(b.NewestHash)
 	return b
 }

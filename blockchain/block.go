@@ -2,6 +2,7 @@ package blockchain
 
 import (
 	"crypto/sha256"
+	"errors"
 	"fmt"
 	"strconv"
 
@@ -19,6 +20,20 @@ type Block struct {
 
 func (b *Block) persist() {
 	db.SaveBlock(b.Hash, utils.ToBytes(b))
+}
+
+func (b *Block) restore(data []byte) {
+	utils.FromBytes(b, data)
+}
+
+func FindBlock(hash string) (*Block, error) {
+	blockBytes := db.Block(hash)
+	if blockBytes == nil {
+		return nil, errors.New("block not found")
+	}
+	block := &Block{}
+	block.restore(blockBytes)
+	return block, nil
 }
 
 func createBlock(data, prevHash string, height int) *Block {
