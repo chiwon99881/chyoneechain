@@ -1,6 +1,8 @@
 package blockchain
 
 import (
+	"bytes"
+	"encoding/gob"
 	"sync"
 
 	"github.com/chiwon99881/chyocoin/db"
@@ -14,6 +16,11 @@ type blockchain struct {
 
 var b *blockchain
 var once sync.Once
+
+func (b *blockchain) restore(data []byte) {
+	decoder := gob.NewDecoder(bytes.NewReader(data))
+	utils.HandleError(decoder.Decode(b))
+}
 
 func (b *blockchain) persist() {
 	db.SaveBlockchain(utils.ToBytes(b))
@@ -31,7 +38,12 @@ func Blockchain() *blockchain {
 	if b == nil {
 		once.Do(func() {
 			b = &blockchain{"", 0}
-			b.AddBlock("Genesis")
+			checkpoint := db.Checkpoint()
+			if checkpoint == nil {
+				b.AddBlock("Genesis")
+			} else {
+				b.restore(checkpoint)
+			}
 		})
 	}
 	return b

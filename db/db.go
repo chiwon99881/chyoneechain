@@ -9,6 +9,7 @@ const (
 	dbName       = "blockchain.db"
 	dataBucket   = "data"
 	blocksBucket = "blocks"
+	checkpoint   = "checkpoint"
 )
 
 var db *bolt.DB
@@ -16,6 +17,8 @@ var db *bolt.DB
 // DB initialize
 func DB() *bolt.DB {
 	if db == nil {
+		// Open creates and opens a database at the given path.
+		// If the file does not exist then it will be created automatically.
 		dbPointer, err := bolt.Open(dbName, 0600, nil)
 		db = dbPointer
 		utils.HandleError(err)
@@ -44,8 +47,18 @@ func SaveBlock(hash string, data []byte) {
 func SaveBlockchain(data []byte) {
 	err := DB().Update(func(t *bolt.Tx) error {
 		bucket := t.Bucket([]byte(dataBucket))
-		err := bucket.Put([]byte("checkpoint"), data)
+		err := bucket.Put([]byte(checkpoint), data)
 		return err
 	})
 	utils.HandleError(err)
+}
+
+func Checkpoint() []byte {
+	var data []byte
+	DB().View(func(t *bolt.Tx) error {
+		bucket := t.Bucket([]byte(dataBucket))
+		data = bucket.Get([]byte(checkpoint))
+		return nil
+	})
+	return data
 }
