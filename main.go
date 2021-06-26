@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/chiwon99881/chyocoin/blockchain"
 	"github.com/chiwon99881/chyocoin/cli"
+	"github.com/chiwon99881/chyocoin/db"
 )
 
 func main() {
-	blockchain.Blockchain()
+	defer db.Close()
 	cli.Start()
 }
