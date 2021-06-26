@@ -1,7 +1,9 @@
 package main
 
-import "github.com/chiwon99881/chyocoin/cli"
+import (
+	"github.com/chiwon99881/chyocoin/blockchain"
+)
 
 func main() {
-	cli.Start()
+	blockchain.Blockchain()
 }
