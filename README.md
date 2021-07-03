@@ -72,3 +72,5 @@
 - #24 Restore our database Part (block) and find one block
 
 - #25 Persist DONE
+
+- #26 Mine blockchain (PoW)
