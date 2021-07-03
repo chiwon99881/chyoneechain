@@ -74,3 +74,5 @@
 - #25 Persist DONE
 
 - #26 Mine blockchain (PoW)
+
+- #27 Recalculate or Remain Difficulty
