@@ -1,7 +1,6 @@
 package blockchain
 
 import (
-	"fmt"
 	"sync"
 
 	"github.com/chiwon99881/chyocoin/db"
@@ -94,6 +93,5 @@ func Blockchain() *blockchain {
 			}
 		})
 	}
-	fmt.Println(b.NewestHash)
 	return b
 }

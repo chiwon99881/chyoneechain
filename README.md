@@ -78,3 +78,5 @@
 - #27 Recalculate or Remain Difficulty
 
 - #28 Recalculate or Remain Difficulty 2
+
+- #29 PoW (Proof of Works) Done
