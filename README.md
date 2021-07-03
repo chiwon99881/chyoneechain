@@ -76,3 +76,5 @@
 - #26 Mine blockchain (PoW)
 
 - #27 Recalculate or Remain Difficulty
+
+- #28 Recalculate or Remain Difficulty 2
