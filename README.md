@@ -84,3 +84,7 @@
 - #30 Transaction Part 1
 
   > Reward to miner
+
+- #31 Transaction Part 2
+
+  > Balance after transactions

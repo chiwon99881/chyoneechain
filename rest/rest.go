@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/chiwon99881/chyocoin/blockchain"
+	"github.com/chiwon99881/chyocoin/utils"
 	"github.com/gorilla/mux"
 )
 
@@ -14,6 +15,11 @@ var port string
 
 // URL of custom type
 type url string
+
+type balanceResponse struct {
+	Owner  string `json:"owner"`
+	Amount int    `json:"amount"`
+}
 
 type errorResponse struct {
 	ErrorMessage string `json:"errorMessage,omitempty"`
@@ -66,6 +72,11 @@ func documentation(rw http.ResponseWriter, r *http.Request) {
 			Method:      "GET",
 			Description: "Get a single block",
 		},
+		{
+			URL:         url("/balance/{address}"),
+			Method:      "GET",
+			Description: "Get TxOuts for an Address",
+		},
 	}
 	// b, err := json.Marshal(data)
 	// utils.HandleError(err)
@@ -105,6 +116,19 @@ func status(rw http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(rw).Encode(blockchain.Blockchain())
 }
 
+func balance(rw http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	address := vars["address"]
+	totalQueryString := r.URL.Query().Get("total")
+	switch totalQueryString {
+	case "true":
+		amount := blockchain.Blockchain().TxOutsAmountByAddress(address)
+		utils.HandleError(json.NewEncoder(rw).Encode(balanceResponse{address, amount}))
+	default:
+		utils.HandleError(json.NewEncoder(rw).Encode(blockchain.Blockchain().TxOutsByAddress(address)))
+	}
+}
+
 // Start of rest.go
 func Start(aPort int) {
 	port = fmt.Sprintf(":%d", aPort)
@@ -114,6 +138,7 @@ func Start(aPort int) {
 	router.HandleFunc("/status", status).Methods("GET")
 	router.HandleFunc("/blocks", blocks).Methods("GET", "POST")
 	router.HandleFunc("/blocks/{hash:[a-f0-9]+}", block).Methods("GET")
+	router.HandleFunc("/balance/{address}", balance).Methods("GET")
 	fmt.Printf("Server listening on http://localhost%s\n", port)
 	log.Fatal(http.ListenAndServe(port, router))
 }
