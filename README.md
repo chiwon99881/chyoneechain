@@ -80,3 +80,7 @@
 - #28 Recalculate or Remain Difficulty 2
 
 - #29 PoW (Proof of Works) Done
+
+- #30 Transaction Part 1
+
+  > Reward to miner

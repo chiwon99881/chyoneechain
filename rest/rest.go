@@ -7,7 +7,6 @@ import (
 	"net/http"
 
 	"github.com/chiwon99881/chyocoin/blockchain"
-	"github.com/chiwon99881/chyocoin/utils"
 	"github.com/gorilla/mux"
 )
 
@@ -79,9 +78,7 @@ func blocks(rw http.ResponseWriter, r *http.Request) {
 	case "GET":
 		json.NewEncoder(rw).Encode(blockchain.Blockchain().Blocks())
 	case "POST":
-		var addBlockBody addBlockBody
-		utils.HandleError(json.NewDecoder(r.Body).Decode(&addBlockBody))
-		blockchain.Blockchain().AddBlock(addBlockBody.Message)
+		blockchain.Blockchain().AddBlock()
 		rw.WriteHeader(http.StatusCreated)
 	}
 }
