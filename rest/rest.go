@@ -127,10 +127,10 @@ func balance(rw http.ResponseWriter, r *http.Request) {
 	totalQueryString := r.URL.Query().Get("total")
 	switch totalQueryString {
 	case "true":
-		amount := blockchain.Blockchain().TxOutsAmountByAddress(address)
+		amount := blockchain.Blockchain().BalanceByAddress(address)
 		utils.HandleError(json.NewEncoder(rw).Encode(balanceResponse{address, amount}))
 	default:
-		utils.HandleError(json.NewEncoder(rw).Encode(blockchain.Blockchain().TxOutsByAddress(address)))
+		utils.HandleError(json.NewEncoder(rw).Encode(blockchain.Blockchain().UTxOutsByAddress(address)))
 	}
 }
 

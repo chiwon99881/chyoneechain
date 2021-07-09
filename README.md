@@ -100,3 +100,7 @@
 - #34 Transaction Part 4
 
   > create block with transaction data
+
+- #35 Transaction Part 5
+
+  > Get unspent transaction outputs

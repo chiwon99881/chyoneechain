@@ -1,7 +1,6 @@
 package blockchain
 
 import (
-	"errors"
 	"time"
 
 	"github.com/chiwon99881/chyocoin/utils"
@@ -36,19 +35,27 @@ func (t *Tx) getID() {
 
 // TxIn Transaction에서 Input은 특정 사람이 가지는 지갑의 총 액수
 type TxIn struct {
-	Owner  string
-	Amount int
+	TxID  string `json:"txID"`
+	Index int    `json:"index"`
+	Owner string `json:"owner"`
 }
 
 // TxOut Transaction에서 Output은 그 총 액수를 재분배한 결과
 type TxOut struct {
-	Owner  string
-	Amount int
+	Owner  string `json:"owner"`
+	Amount int    `json:"amount"`
+}
+
+// UTxOut is unspent transaction output
+type UTxOut struct {
+	TxID   string `json:"txID"`
+	Index  int    `json:"index"`
+	Amount int    `json:"amount"`
 }
 
 func makeCoinbaseTx(address string) *Tx {
 	txIns := []*TxIn{
-		{"COINBASE", minerReward},
+		{"", -1, "COINBASE"},
 	}
 	txOuts := []*TxOut{
 		{address, minerReward},
@@ -64,36 +71,7 @@ func makeCoinbaseTx(address string) *Tx {
 }
 
 func makeTx(from, to string, amount int) (*Tx, error) {
-	if Blockchain().TxOutsAmountByAddress(from) < amount {
-		return nil, errors.New("not enough money")
-	}
-	var txIns []*TxIn
-	var txOuts []*TxOut
-	total := 0
-	oldTxOuts := Blockchain().TxOutsByAddress(from)
-	for _, txOut := range oldTxOuts {
-		if total > amount {
-			break
-		}
-		txIn := &TxIn{txOut.Owner, txOut.Amount}
-		txIns = append(txIns, txIn)
-		total += txOut.Amount
-	}
-	change := total - amount
-	toTxOut := &TxOut{to, amount}
-	txOuts = append(txOuts, toTxOut)
-	if change != 0 {
-		fromTxOut := &TxOut{from, change}
-		txOuts = append(txOuts, fromTxOut)
-	}
-	tx := &Tx{
-		ID:        "",
-		Timestamp: int(time.Now().Unix()),
-		TxIns:     txIns,
-		TxOuts:    txOuts,
-	}
-	tx.getID()
-	return tx, nil
+	return nil, nil
 }
 
 func (m *mempool) AddTx(to string, amount int) error {
