@@ -104,3 +104,7 @@
 - #35 Transaction Part 5
 
   > Get unspent transaction outputs
+
+- #36 Transaction Part 5
+
+  > Transactions only using unspent transaction outputs
