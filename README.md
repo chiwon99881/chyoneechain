@@ -96,3 +96,7 @@
 - #33 Transaction Part 4
 
   > register transaction in mempool
+
+- #34 Transaction Part 4
+
+  > create block with transaction data
