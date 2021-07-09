@@ -108,3 +108,7 @@
 - #36 Transaction Part 5
 
   > Transactions only using unspent transaction outputs
+
+- #37 Transaction Part 6
+
+  > Not allow coin if that coin is already in mempool
