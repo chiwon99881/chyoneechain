@@ -92,3 +92,7 @@
 - #32 Transaction Part 3
 
   > Mempool and Unconfirmed transactions
+
+- #33 Transaction Part 4
+
+  > register transaction in mempool
