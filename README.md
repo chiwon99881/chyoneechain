@@ -122,3 +122,5 @@
 - #41 Singleton pattern for wallet
 
 - #42 Singleton pattern for wallet Part 2
+
+- #43 Sign, Verify signature Part 1
