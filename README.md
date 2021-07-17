@@ -120,3 +120,5 @@
 - #40 Restore privateKey
 
 - #41 Singleton pattern for wallet
+
+- #42 Singleton pattern for wallet Part 2
