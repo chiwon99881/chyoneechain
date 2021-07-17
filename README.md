@@ -118,3 +118,5 @@
 - #39 Digital Sign for Transaction
 
 - #40 Restore privateKey
+
+- #41 Singleton pattern for wallet
