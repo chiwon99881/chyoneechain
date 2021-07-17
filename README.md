@@ -116,3 +116,5 @@
 - #38 Transaction Part Done with refactoring
 
 - #39 Digital Sign for Transaction
+
+- #40 Restore privateKey
