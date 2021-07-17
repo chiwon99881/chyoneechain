@@ -7,6 +7,7 @@ import (
 	"crypto/x509"
 	"encoding/hex"
 	"fmt"
+	"math/big"
 	"os"
 
 	"github.com/chiwon99881/chyocoin/utils"
@@ -66,8 +67,33 @@ func sign(payload string, w *wallet) string {
 	return fmt.Sprintf("%x", signature)
 }
 
-func verify(signature, payload, publicKey string) bool {
-	//ecdsa.Verify()
+func restoreBigInts(payload string) (*big.Int, *big.Int, error) {
+	bytes, err := hex.DecodeString(payload)
+	if err != nil {
+		return nil, nil, err
+	}
+	aBytes := bytes[:len(bytes)/2]
+	bBytes := bytes[len(bytes)/2:]
+	bigA, bigB := big.Int{}, big.Int{}
+	bigA.SetBytes(aBytes)
+	bigB.SetBytes(bBytes)
+	return &bigA, &bigB, nil
+}
+
+func verify(signature, payload, address string) bool {
+	r, s, err := restoreBigInts(signature)
+	utils.HandleError(err)
+	x, y, err := restoreBigInts(address)
+	utils.HandleError(err)
+	publicKey := ecdsa.PublicKey{
+		Curve: elliptic.P256(),
+		X:     x,
+		Y:     y,
+	}
+	hash, err := hex.DecodeString(payload)
+	utils.HandleError(err)
+	ok := ecdsa.Verify(&publicKey, hash, r, s)
+	return ok
 }
 
 // Wallet is return wallet memory address
