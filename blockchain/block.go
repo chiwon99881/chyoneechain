@@ -55,7 +55,7 @@ func (b *Block) mine() {
 	}
 }
 
-func createBlock(prevHash string, height int, diff int) *Block {
+func createBlock(prevHash string, height, diff int) *Block {
 	block := Block{
 		Hash:       "",
 		PrevHash:   prevHash,

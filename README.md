@@ -114,3 +114,5 @@
   > Not allow coin if that coin is already in mempool
 
 - #38 Transaction Part Done with refactoring
+
+- #39 Digital Sign for Transaction

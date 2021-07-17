@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/chiwon99881/chyocoin/cli"
-	"github.com/chiwon99881/chyocoin/db"
+	"github.com/chiwon99881/chyocoin/wallet"
 )
 
 func main() {
-	defer db.Close()
-	cli.Start()
+	//defer db.Close()
+	//cli.Start()
+	wallet.Start()
 }
