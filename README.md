@@ -126,3 +126,5 @@
 - #43 Sign, Verify signature Part 1
 
 - #44 Sign, Verify signature Part 2
+
+- #45 wallet Part DONE !

@@ -58,7 +58,8 @@ func addrFromKey(key *ecdsa.PrivateKey) string {
 	return fmt.Sprintf("%x", z)
 }
 
-func sign(payload string, w *wallet) string {
+// Sign is make signature with private Key
+func Sign(payload string, w *wallet) string {
 	payloadAsBytes, err := hex.DecodeString(payload)
 	utils.HandleError(err)
 	r, s, err := ecdsa.Sign(rand.Reader, w.privateKey, payloadAsBytes)
@@ -80,7 +81,8 @@ func restoreBigInts(payload string) (*big.Int, *big.Int, error) {
 	return &bigA, &bigB, nil
 }
 
-func verify(signature, payload, address string) bool {
+// Verify is verify signature
+func Verify(signature, payload, address string) bool {
 	r, s, err := restoreBigInts(signature)
 	utils.HandleError(err)
 	x, y, err := restoreBigInts(address)

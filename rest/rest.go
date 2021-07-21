@@ -8,6 +8,7 @@ import (
 
 	"github.com/chiwon99881/chyocoin/blockchain"
 	"github.com/chiwon99881/chyocoin/utils"
+	"github.com/chiwon99881/chyocoin/wallet"
 	"github.com/gorilla/mux"
 )
 
@@ -47,6 +48,10 @@ type urlDescription struct {
 type addTxPayload struct {
 	To     string `json:"to"`
 	Amount int    `json:"amount"`
+}
+
+type myWalletResponse struct {
+	Address string `json:"address"`
 }
 
 func documentation(rw http.ResponseWriter, r *http.Request) {
@@ -145,9 +150,16 @@ func transactions(rw http.ResponseWriter, r *http.Request) {
 	utils.HandleError(json.NewDecoder(r.Body).Decode(&payload))
 	err := blockchain.Mempool.AddTx(payload.To, payload.Amount)
 	if err != nil {
+		rw.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(rw).Encode(errorResponse{"not enough money"})
+		return
 	}
 	rw.WriteHeader(http.StatusCreated)
+}
+
+func myWallet(rw http.ResponseWriter, r *http.Request) {
+	address := wallet.Wallet().Address
+	json.NewEncoder(rw).Encode(myWalletResponse{Address: address})
 }
 
 // Start of rest.go
@@ -161,6 +173,7 @@ func Start(aPort int) {
 	router.HandleFunc("/blocks/{hash:[a-f0-9]+}", block).Methods("GET")
 	router.HandleFunc("/balance/{address}", balance).Methods("GET")
 	router.HandleFunc("/mempool", mempool)
+	router.HandleFunc("/wallet", myWallet).Methods("GET")
 	router.HandleFunc("/transactions", transactions).Methods("POST")
 	fmt.Printf("Server listening on http://localhost%s\n", port)
 	log.Fatal(http.ListenAndServe(port, router))

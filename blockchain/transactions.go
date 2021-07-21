@@ -31,21 +31,17 @@ type Tx struct {
 	TxOuts    []*TxOut `json:"txOuts"`
 }
 
-func (t *Tx) getID() {
-	t.ID = utils.Hash(t)
-}
-
 // TxIn Transaction에서 Input은 특정 사람이 가지는 지갑의 총 액수
 type TxIn struct {
-	TxID  string `json:"txID"`
-	Index int    `json:"index"`
-	Owner string `json:"owner"`
+	TxID      string `json:"txID"`
+	Index     int    `json:"index"`
+	Signature string `json:"signature"`
 }
 
 // TxOut Transaction에서 Output은 그 총 액수를 재분배한 결과
 type TxOut struct {
-	Owner  string `json:"owner"`
-	Amount int    `json:"amount"`
+	Address string `json:"address"`
+	Amount  int    `json:"amount"`
 }
 
 // UTxOut is unspent transaction output
@@ -53,6 +49,33 @@ type UTxOut struct {
 	TxID   string `json:"txID"`
 	Index  int    `json:"index"`
 	Amount int    `json:"amount"`
+}
+
+func (t *Tx) getID() {
+	t.ID = utils.Hash(t)
+}
+
+func (t *Tx) sign() {
+	for _, txIn := range t.TxIns {
+		txIn.Signature = wallet.Sign(t.ID, wallet.Wallet())
+	}
+}
+
+func validate(t *Tx) bool {
+	valid := true
+	for _, txIn := range t.TxIns {
+		prevTx := FindTx(Blockchain(), txIn.TxID)
+		if prevTx == nil {
+			valid = false
+			break
+		}
+		address := prevTx.TxOuts[txIn.Index].Address
+		valid = wallet.Verify(txIn.Signature, t.ID, address)
+		if valid == false {
+			break
+		}
+	}
+	return valid
 }
 
 func isOnMempool(uTxOut *UTxOut) bool {
@@ -116,6 +139,11 @@ func makeTx(from, to string, amount int) (*Tx, error) {
 		TxOuts:    txOuts,
 	}
 	tx.getID()
+	tx.sign()
+	valid := validate(tx)
+	if !valid {
+		return nil, errors.New("This transaction invalid")
+	}
 	return tx, nil
 }
 
