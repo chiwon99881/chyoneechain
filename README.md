@@ -130,3 +130,5 @@
 - #45 wallet Part DONE !
 
 - #46 Upgrade http to WebSocket
+
+- #47 P2P Connection Part 1

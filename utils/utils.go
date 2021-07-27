@@ -6,6 +6,7 @@ import (
 	"encoding/gob"
 	"fmt"
 	"log"
+	"strings"
 )
 
 // HandleError function for handle error
@@ -25,13 +26,24 @@ func ToBytes(i interface{}) []byte {
 	return aBuffer.Bytes()
 }
 
+// FromBytes is function of byte to string
 func FromBytes(i interface{}, data []byte) {
 	decoder := gob.NewDecoder(bytes.NewReader(data))
 	HandleError(decoder.Decode(i))
 }
 
+// Hash is function of any value to hash
 func Hash(i interface{}) string {
 	s := fmt.Sprintf("%v", i)
 	hash := sha256.Sum256([]byte(s))
 	return fmt.Sprintf("%x", hash)
+}
+
+// Splitter is function of split string
+func Splitter(s, sep string, i int) string {
+	r := strings.Split(s, sep)
+	if len(r)-1 < i {
+		return ""
+	}
+	return r[i]
 }

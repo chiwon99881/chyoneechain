@@ -32,6 +32,10 @@ type addBlockBody struct {
 	Message string `json:"message"`
 }
 
+type addPeerPayload struct {
+	Address, Port string
+}
+
 // MarshalText of URL receiver
 func (u url) MarshalText() ([]byte, error) {
 	url := fmt.Sprintf("http://localhost%s%s", port, u)
@@ -175,6 +179,18 @@ func myWallet(rw http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(rw).Encode(myWalletResponse{Address: address})
 }
 
+func peers(rw http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case "POST":
+		var payload addPeerPayload
+		json.NewDecoder(r.Body).Decode(&payload)
+		p2p.AddPeer(payload.Address, payload.Port, port)
+		rw.WriteHeader(http.StatusOK)
+	case "GET":
+		json.NewEncoder(rw).Encode(p2p.Peers)
+	}
+}
+
 // Start of rest.go
 func Start(aPort int) {
 	port = fmt.Sprintf(":%d", aPort)
@@ -189,6 +205,7 @@ func Start(aPort int) {
 	router.HandleFunc("/wallet", myWallet).Methods("GET")
 	router.HandleFunc("/transactions", transactions).Methods("POST")
 	router.HandleFunc("/ws", p2p.Upgrade).Methods("GET")
+	router.HandleFunc("/peers", peers).Methods("GET", "POST")
 	fmt.Printf("Server listening on http://localhost%s\n", port)
 	log.Fatal(http.ListenAndServe(port, router))
 }
