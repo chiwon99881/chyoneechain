@@ -2,12 +2,20 @@ package p2p
 
 import (
 	"fmt"
+	"sync"
 
 	"github.com/gorilla/websocket"
 )
 
+type peers struct {
+	v map[string]*peer
+	m sync.Mutex
+}
+
 // Peers is variable of save p2p information
-var Peers map[string]*peer = make(map[string]*peer)
+var Peers peers = peers{
+	v: make(map[string]*peer),
+}
 
 type peer struct {
 	key     string
@@ -17,9 +25,22 @@ type peer struct {
 	inbox   chan []byte
 }
 
+// AllPeers is function of return all nodes.
+func AllPeers(p *peers) []string {
+	p.m.Lock()
+	defer p.m.Unlock()
+	var keys []string
+	for key := range p.v {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
 func (p *peer) close() {
+	Peers.m.Lock()
+	defer Peers.m.Unlock()
 	p.conn.Close()
-	delete(Peers, p.key)
+	delete(Peers.v, p.key)
 }
 
 func (p *peer) read() {
@@ -55,6 +76,6 @@ func initPeer(conn *websocket.Conn, address, port string) *peer {
 	}
 	go p.read()
 	go p.write()
-	Peers[key] = p
+	Peers.v[key] = p
 	return p
 }

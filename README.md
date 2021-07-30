@@ -136,3 +136,10 @@
 - #48 P2P Connection Part 2
 
 - #49 P2P Connection Part 3
+
+  > data races is occur when two or more goroutine access same data struct or data.
+  > for example, when A goroutine edit \_DATA while when B goroutine delete \_DATA or read \_DATA.
+
+- #50 P2P Connection Part 4 (Mutex)
+
+  > modify error when occur data races by using Mutex.
