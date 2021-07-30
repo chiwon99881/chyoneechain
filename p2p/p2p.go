@@ -3,7 +3,6 @@ package p2p
 import (
 	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/chiwon99881/chyocoin/utils"
 	"github.com/gorilla/websocket"
@@ -24,9 +23,7 @@ func Upgrade(rw http.ResponseWriter, r *http.Request) {
 	// 3000 -> 4000 으로 가는 conn
 	conn, err := upgrader.Upgrade(rw, r, nil)
 	utils.HandleError(err)
-	peer := initPeer(conn, ip, openPort)
-	time.Sleep(15 * time.Second)
-	peer.inbox <- []byte("Hello from 3000!")
+	initPeer(conn, ip, openPort)
 }
 
 // AddPeer is function of p2p
@@ -42,7 +39,5 @@ func AddPeer(address, port, openPort string) {
 	// 4000 -> 3000 으로 가는 conn
 	conn, _, err := websocket.DefaultDialer.Dial(fmt.Sprintf("ws://%s:%s/ws?openPort=%s", address, port, openPort[1:]), nil)
 	utils.HandleError(err)
-	peer := initPeer(conn, address, port)
-	time.Sleep(10 * time.Second)
-	peer.inbox <- []byte("Hello from 4000!")
+	initPeer(conn, address, port)
 }
