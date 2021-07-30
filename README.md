@@ -132,3 +132,5 @@
 - #46 Upgrade http to WebSocket
 
 - #47 P2P Connection Part 1
+
+- #48 P2P Connection Part 2
