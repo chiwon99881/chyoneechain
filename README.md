@@ -143,3 +143,5 @@
 - #50 P2P Connection Part 4 (Mutex)
 
   > modify error when occur data races by using Mutex.
+
+- #51 P2P Connection Part 5 (send message)

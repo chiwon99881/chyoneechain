@@ -39,5 +39,6 @@ func AddPeer(address, port, openPort string) {
 	// 4000 -> 3000 으로 가는 conn
 	conn, _, err := websocket.DefaultDialer.Dial(fmt.Sprintf("ws://%s:%s/ws?openPort=%s", address, port, openPort[1:]), nil)
 	utils.HandleError(err)
-	initPeer(conn, address, port)
+	p := initPeer(conn, address, port)
+	sendNewestBlock(p)
 }
