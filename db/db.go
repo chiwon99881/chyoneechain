@@ -87,3 +87,13 @@ func Block(hash string) []byte {
 	})
 	return data
 }
+
+// EmptyBlocks is function of delete bucket and data
+func EmptyBlocks() {
+	DB().Update(func(t *bolt.Tx) error {
+		utils.HandleError(t.DeleteBucket([]byte(blocksBucket)))
+		_, err := t.CreateBucket([]byte(blocksBucket))
+		utils.HandleError(err)
+		return nil
+	})
+}

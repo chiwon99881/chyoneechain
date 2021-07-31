@@ -20,6 +20,7 @@ func Upgrade(rw http.ResponseWriter, r *http.Request) {
 		}
 		return true
 	}
+	fmt.Printf("%s wants an upgrade\n", openPort)
 	// 3000 -> 4000 으로 가는 conn
 	conn, err := upgrader.Upgrade(rw, r, nil)
 	utils.HandleError(err)
@@ -28,6 +29,7 @@ func Upgrade(rw http.ResponseWriter, r *http.Request) {
 
 // AddPeer is function of p2p
 func AddPeer(address, port, openPort string) {
+	fmt.Printf("%s wants to connect to port %s\n", openPort, port)
 	// Dial은 해당 URL을 call하면 새로운 connection을 만들어 준다.
 	// 즉, Port가 4000인 node가 이 function을 call하여 Dial을 실행하면 저 URL(ws://%s:%s/ws)에 대한 새로운 peer을 만들고
 	// 그 만들어진 peer는 해당 URL에 대한 request가 실행되고 그 request는 위 Upgrade function을 호출하는 request handler를 request한다.
