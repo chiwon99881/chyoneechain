@@ -2,7 +2,6 @@ package p2p
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/chiwon99881/chyocoin/blockchain"
 	"github.com/chiwon99881/chyocoin/utils"
@@ -41,12 +40,34 @@ func sendNewestBlock(p *peer) {
 	p.inbox <- m
 }
 
+func requestAllBlocks(p *peer) {
+	m := makeMessage(MessageAllBlocksRequest, nil)
+	p.inbox <- m
+}
+
+func sendAllBlocks(p *peer) {
+	m := makeMessage(MessageAllBlocksResponse, blockchain.Blocks(blockchain.Blockchain()))
+	p.inbox <- m
+}
+
 func handleMsg(m *Message, p *peer) {
 	switch m.Kind {
 	case MessageNewestBlock:
 		var payload blockchain.Block
 		err := json.Unmarshal(m.Payload, &payload)
 		utils.HandleError(err)
-		fmt.Println(payload)
+		b, err := blockchain.FindBlock(blockchain.Blockchain().NewestHash)
+		utils.HandleError(err)
+		if payload.Height >= b.Height {
+			requestAllBlocks(p)
+		} else {
+			sendNewestBlock(p)
+		}
+	case MessageAllBlocksRequest:
+		sendAllBlocks(p)
+	case MessageAllBlocksResponse:
+		var payload []*blockchain.Block
+		err := json.Unmarshal(m.Payload, &payload)
+		utils.HandleError(err)
 	}
 }

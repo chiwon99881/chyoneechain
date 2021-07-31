@@ -1,12 +1,15 @@
 package db
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/chiwon99881/chyocoin/utils"
 	bolt "go.etcd.io/bbolt"
 )
 
 const (
-	dbName       = "blockchain.db"
+	dbName       = "blockchain"
 	dataBucket   = "data"
 	blocksBucket = "blocks"
 	checkpoint   = "checkpoint"
@@ -14,12 +17,17 @@ const (
 
 var db *bolt.DB
 
+func getDbName() string {
+	port := os.Args[2][6:]
+	return fmt.Sprintf("%s_%s.db", dbName, port)
+}
+
 // DB initialize
 func DB() *bolt.DB {
 	if db == nil {
 		// Open creates and opens a database at the given path.
 		// If the file does not exist then it will be created automatically.
-		dbPointer, err := bolt.Open(dbName, 0600, nil)
+		dbPointer, err := bolt.Open(getDbName(), 0600, nil)
 		db = dbPointer
 		utils.HandleError(err)
 		err = db.Update(func(t *bolt.Tx) error {
@@ -33,6 +41,7 @@ func DB() *bolt.DB {
 	return db
 }
 
+// Close is function of close database
 func Close() {
 	DB().Close()
 }
@@ -57,6 +66,7 @@ func SaveBlockchain(data []byte) {
 	utils.HandleError(err)
 }
 
+// Checkpoint is function of current blockchain pointer
 func Checkpoint() []byte {
 	var data []byte
 	DB().View(func(t *bolt.Tx) error {
@@ -67,6 +77,7 @@ func Checkpoint() []byte {
 	return data
 }
 
+// Block is function of get one block
 func Block(hash string) []byte {
 	var data []byte
 	DB().View(func(t *bolt.Tx) error {

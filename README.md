@@ -147,3 +147,5 @@
 - #51 P2P Connection Part 5 (send message)
 
 - #52 Fixed data races
+
+- #53 P2P Connection Part 6 (send message by message type)
