@@ -151,3 +151,5 @@
 - #53 P2P Connection Part 6 (send message by message type)
 
 - #54 P2P Connection Part 7 (replace all blocks by newest peer's blockchain)
+
+- #55 P2P Connection Part 8 (broadcast new block)

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/chiwon99881/chyocoin/blockchain"
 	"github.com/chiwon99881/chyocoin/utils"
 	"github.com/gorilla/websocket"
 )
@@ -43,4 +44,11 @@ func AddPeer(address, port, openPort string) {
 	utils.HandleError(err)
 	p := initPeer(conn, address, port)
 	sendNewestBlock(p)
+}
+
+// BroadcastNewBlock is function of broadcast new block for all peers.
+func BroadcastNewBlock(b *blockchain.Block) {
+	for _, p := range Peers.v {
+		notifyNewBlock(b, p)
+	}
 }

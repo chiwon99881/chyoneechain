@@ -1,6 +1,8 @@
 package blockchain
 
 import (
+	"encoding/json"
+	"net/http"
 	"sync"
 
 	"github.com/chiwon99881/chyocoin/db"
@@ -18,6 +20,7 @@ type blockchain struct {
 	NewestHash        string `json:"newestHash"`
 	Height            int    `json:"height"`
 	CurrentDifficulty int    `json:"currentDifficulty"`
+	m                 sync.Mutex
 }
 
 var b *blockchain
@@ -27,12 +30,13 @@ func (b *blockchain) restore(data []byte) {
 	utils.FromBytes(b, data)
 }
 
-func (b *blockchain) AddBlock() {
+func (b *blockchain) AddBlock() *Block {
 	block := createBlock(b.NewestHash, b.Height+1, getDifficulty(b))
 	b.NewestHash = block.Hash
 	b.Height = block.Height
 	b.CurrentDifficulty = block.Difficulty
 	persistBlockchain(b)
+	return block
 }
 
 func persistBlockchain(b *blockchain) {
@@ -41,6 +45,8 @@ func persistBlockchain(b *blockchain) {
 
 // Blocks is get all block in blockchain
 func Blocks(b *blockchain) []*Block {
+	b.m.Lock()
+	defer b.m.Unlock()
 	var blocks []*Block
 	hashCursor := b.NewestHash
 	for {
@@ -153,7 +159,16 @@ func Blockchain() *blockchain {
 	return b
 }
 
+// Status is function of see blockchain status
+func Status(b *blockchain, rw http.ResponseWriter) {
+	b.m.Lock()
+	defer b.m.Unlock()
+	utils.HandleError(json.NewEncoder(rw).Encode(b))
+}
+
 func (b *blockchain) Replace(newBlocks []*Block) {
+	b.m.Lock()
+	defer b.m.Unlock()
 	b.CurrentDifficulty = newBlocks[0].Difficulty
 	b.Height = len(newBlocks)
 	b.NewestHash = newBlocks[0].Hash
