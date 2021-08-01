@@ -181,7 +181,9 @@ func (b *blockchain) Replace(newBlocks []*Block) {
 
 func (b *blockchain) AddPeerBlock(block *Block) {
 	b.m.Lock()
+	m.m.Lock()
 	defer b.m.Unlock()
+	defer m.m.Unlock()
 
 	b.Height++
 	b.CurrentDifficulty = block.Difficulty
@@ -190,5 +192,10 @@ func (b *blockchain) AddPeerBlock(block *Block) {
 	persistBlockchain(b)
 	persistBlock(block)
 
-	// mempool
+	for _, tx := range block.Transactions {
+		_, ok := m.Txs[tx.ID]
+		if ok {
+			delete(m.Txs, tx.ID)
+		}
+	}
 }

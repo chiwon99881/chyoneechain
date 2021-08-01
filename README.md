@@ -155,3 +155,8 @@
 - #55 P2P Connection Part 8 (broadcast new block)
 
 - #56 P2P Connection Part 9 (broadcast new block 2)
+
+- #57 P2P Connection Part 10
+
+  > if one peer add new block, all the ohers peer's mempool also cleanup.
+  > this commit do that.

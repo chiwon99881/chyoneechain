@@ -52,3 +52,10 @@ func BroadcastNewBlock(b *blockchain.Block) {
 		notifyNewBlock(b, p)
 	}
 }
+
+// BroadcastNewTx is function of broadcast new tx for all peers.
+func BroadcastNewTx(tx *blockchain.Tx) {
+	for _, p := range Peers.v {
+		notifyNewTx(tx, p)
+	}
+}

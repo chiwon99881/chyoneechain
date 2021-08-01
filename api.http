@@ -21,11 +21,11 @@ http://localhost:4000/balance/9f33705ffdf7aebbfdad4a975e8b61c0142ef28df4e187313d
 http://localhost:4000/mempool
 
 ###
-POST http://localhost:4000/transactions 
+POST http://localhost:3000/transactions 
 
 {
     "to": "jungyoon",
-    "amount": 50
+    "amount": 10
 }
 
 ###
