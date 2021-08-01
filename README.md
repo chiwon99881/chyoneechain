@@ -165,3 +165,5 @@
 
   > peers에 대해 읽고 있는 중에 peers에 inbox를 수정하려고 시도하기 때문에
   > data races가 일어나고 그 것을 수정
+
+- #59 P2P Connection Part 12 (multi node part 1)

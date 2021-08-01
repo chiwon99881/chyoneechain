@@ -29,7 +29,7 @@ func Upgrade(rw http.ResponseWriter, r *http.Request) {
 }
 
 // AddPeer is function of p2p
-func AddPeer(address, port, openPort string) {
+func AddPeer(address, port, openPort string, broadcast bool) {
 	fmt.Printf("%s wants to connect to port %s\n", openPort, port)
 	// Dial은 해당 URL을 call하면 새로운 connection을 만들어 준다.
 	// 즉, Port가 4000인 node가 이 function을 call하여 Dial을 실행하면 저 URL(ws://%s:%s/ws)에 대한 새로운 peer을 만들고
@@ -43,6 +43,10 @@ func AddPeer(address, port, openPort string) {
 	conn, _, err := websocket.DefaultDialer.Dial(fmt.Sprintf("ws://%s:%s/ws?openPort=%s", address, port, openPort[1:]), nil)
 	utils.HandleError(err)
 	p := initPeer(conn, address, port)
+	if broadcast {
+		broadcastNewPeer(p)
+		return
+	}
 	sendNewestBlock(p)
 }
 
@@ -61,5 +65,14 @@ func BroadcastNewTx(tx *blockchain.Tx) {
 	defer Peers.m.Unlock()
 	for _, p := range Peers.v {
 		notifyNewTx(tx, p)
+	}
+}
+
+func broadcastNewPeer(newPeer *peer) {
+	for key, p := range Peers.v {
+		if key != newPeer.key {
+			payload := fmt.Sprintf("%s:%s", newPeer.key, p.port)
+			notifyNewPeer(payload, p)
+		}
 	}
 }

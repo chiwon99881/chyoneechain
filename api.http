@@ -2,7 +2,7 @@ http://localhost:4000/
 
 
 ###
-http://localhost:4000/blocks
+http://localhost:3000/blocks
 
 ###
 http://localhost:4000/status
@@ -18,14 +18,14 @@ http://localhost:4000/blocks/4
 http://localhost:4000/balance/9f33705ffdf7aebbfdad4a975e8b61c0142ef28df4e187313de07fb135dfd1c7db2eb2c4dda9ec8ce381e5e75af2e01b8d9420a8d14432b02edc8b51b7108610
 
 ###
-http://localhost:4000/mempool
+http://localhost:3000/mempool
 
 ###
-POST http://localhost:4000/transactions 
+POST http://localhost:3000/transactions 
 
 {
-    "to": "jungyoon",
-    "amount": 10
+    "to": "holy",
+    "amount": 30
 }
 
 ###
@@ -37,4 +37,4 @@ POST http://localhost:4000/peers
 }
 
 ###
-http://localhost:4000/peers
+http://localhost:3000/peers
