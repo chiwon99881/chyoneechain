@@ -31,6 +31,8 @@ func (b *blockchain) restore(data []byte) {
 }
 
 func (b *blockchain) AddBlock() *Block {
+	b.m.Lock()
+	defer b.m.Unlock()
 	block := createBlock(b.NewestHash, b.Height+1, getDifficulty(b))
 	b.NewestHash = block.Hash
 	b.Height = block.Height

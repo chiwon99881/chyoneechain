@@ -160,3 +160,8 @@
 
   > if one peer add new block, all the ohers peer's mempool also cleanup.
   > this commit do that.
+
+- #58 P2P Connection Part 11 (Fix data races)
+
+  > peers에 대해 읽고 있는 중에 peers에 inbox를 수정하려고 시도하기 때문에
+  > data races가 일어나고 그 것을 수정
