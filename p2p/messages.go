@@ -3,6 +3,7 @@ package p2p
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/chiwon99881/chyocoin/blockchain"
 	"github.com/chiwon99881/chyocoin/utils"
@@ -109,6 +110,7 @@ func handleMsg(m *Message, p *peer) {
 	case MessageNewPeerNotify:
 		var payload string
 		utils.HandleError(json.Unmarshal(m.Payload, &payload))
-		fmt.Println(payload)
+		parts := strings.Split(payload, ":")
+		AddPeer(parts[0], parts[1], parts[2], false)
 	}
 }

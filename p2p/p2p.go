@@ -40,12 +40,11 @@ func AddPeer(address, port, openPort string, broadcast bool) {
 	//이 function은 Port 4000이 Port 3000에게 연결을 하고 싶다는 function이고 그 연결을 Dial을 통해 3000이 위 Upgrade function을 실행할 수 있게 한다.
 
 	// 4000 -> 3000 으로 가는 conn
-	conn, _, err := websocket.DefaultDialer.Dial(fmt.Sprintf("ws://%s:%s/ws?openPort=%s", address, port, openPort[1:]), nil)
+	conn, _, err := websocket.DefaultDialer.Dial(fmt.Sprintf("ws://%s:%s/ws?openPort=%s", address, port, openPort), nil)
 	utils.HandleError(err)
 	p := initPeer(conn, address, port)
 	if broadcast {
 		broadcastNewPeer(p)
-		return
 	}
 	sendNewestBlock(p)
 }
