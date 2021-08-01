@@ -153,3 +153,5 @@
 - #54 P2P Connection Part 7 (replace all blocks by newest peer's blockchain)
 
 - #55 P2P Connection Part 8 (broadcast new block)
+
+- #56 P2P Connection Part 9 (broadcast new block 2)
