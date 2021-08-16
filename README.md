@@ -185,3 +185,5 @@
   > go test -v -coverprofile cover.out ./... (이거는 현재 test파일로 coverage가 얼마나 찍히는지까지 로그에 보여주고 cover.out파일을 생성한다.)
 
   > go tool cover -html=cover.out (이거는 cover.out파일을 html파일로 생성해서 보여줄 수 있는 명령어이다.)
+
+- #64 Go Test Part 3 (how to test print log on console)
