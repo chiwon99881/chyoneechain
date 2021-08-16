@@ -175,3 +175,7 @@
   > go get golang.org/x/tools/cmd/godoc
   > godoc -http:6060 -> http://localhost:6060 으로 가면
   > go docs같은 진짜 docs가 만들어진다 우리가 작업한 작업물에 대해서 !
+
+- #62 Go Test
+
+  > wannatestfilename_test.go
