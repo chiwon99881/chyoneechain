@@ -187,3 +187,8 @@
   > go tool cover -html=cover.out (이거는 cover.out파일을 html파일로 생성해서 보여줄 수 있는 명령어이다.)
 
 - #64 Go Test Part 3 (how to test print log on console)
+
+- #65 Go Test Part 4 (utils DONE)
+
+  > go test -v -coverprofile cover.out ./... && go tool cover -html=cover.out
+  > 이렇게 하면 html파일로 coverage를 보여주는 브라우저를 띄워주고, console에 pass,fail결과를 보여주는 테스트를 동시에 실행한다.

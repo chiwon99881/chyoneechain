@@ -2,6 +2,7 @@ package utils
 
 import (
 	"encoding/hex"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"reflect"
@@ -80,5 +81,36 @@ func TestHandleError(t *testing.T) {
 	HandleError(err)
 	if !called {
 		t.Errorf("HandleError should call fn")
+	}
+}
+
+func TestFromBytes(t *testing.T) {
+	type testStruct struct {
+		Test string
+	}
+	var restored testStruct
+	ts := testStruct{"test"}
+	b := ToBytes(ts)
+	FromBytes(&restored, b)
+	// DeepEqual은 두 interface가 같은지 확인한다 interface의 필드와 타입 unexport, export까지 모두 다
+	if !reflect.DeepEqual(ts, restored) {
+		t.Error("FromBytes() should restore struct")
+	}
+}
+
+func TestToJSON(t *testing.T) {
+	type testStruct struct {
+		Test string
+	}
+	s := testStruct{"test"}
+	b := ToJSON(s)
+	k := reflect.TypeOf(b).Kind()
+	if k != reflect.Slice {
+		t.Errorf("Expected %v, but got %v", reflect.Slice, k)
+	}
+	var restored testStruct
+	json.Unmarshal(b, &restored)
+	if !reflect.DeepEqual(restored, s) {
+		t.Error("ToJSON() should encode to JSON correctly.")
 	}
 }
