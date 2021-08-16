@@ -1,3 +1,4 @@
+//Package utils contains function to be used across the application.
 package utils
 
 import (
