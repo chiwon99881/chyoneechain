@@ -192,3 +192,5 @@
 
   > go test -v -coverprofile cover.out ./... && go tool cover -html=cover.out
   > 이렇게 하면 html파일로 coverage를 보여주는 브라우저를 띄워주고, console에 pass,fail결과를 보여주는 테스트를 동시에 실행한다.
+
+- #66 Go Test Part 5 (wallet Verify(), Sign())
