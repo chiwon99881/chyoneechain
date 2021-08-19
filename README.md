@@ -198,3 +198,7 @@
 - #67 Go Test Part 6 (prepare for test)
 
   > use interface and implement by create receiver function
+
+- #68 Go Test Part 7 (TDD Test)
+
+  > interface를 이용하여 test파일과 실제 go파일간에 원하는 결과를 처리해주기
