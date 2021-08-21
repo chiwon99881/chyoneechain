@@ -215,3 +215,5 @@
 - #70 Go Test Part 8 (CreateBlock func)
 
 - #71 Go Test Part 9 (Blockchain and handling how can we sync.Once)
+
+- #72 Go Test Part 10
