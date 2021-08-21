@@ -86,7 +86,7 @@ func validate(t *Tx) bool {
 		}
 		address := prevTx.TxOuts[txIn.Index].Address
 		valid = wallet.Verify(txIn.Signature, t.ID, address)
-		if valid == false {
+		if !valid {
 			break
 		}
 	}
@@ -157,7 +157,7 @@ func makeTx(from, to string, amount int) (*Tx, error) {
 	tx.sign()
 	valid := validate(tx)
 	if !valid {
-		return nil, errors.New("This transaction invalid")
+		return nil, errors.New("this transaction invalid")
 	}
 	return tx, nil
 }

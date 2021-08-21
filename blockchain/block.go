@@ -6,7 +6,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/chiwon99881/chyocoin/db"
 	"github.com/chiwon99881/chyocoin/utils"
 )
 
@@ -22,7 +21,7 @@ type Block struct {
 }
 
 func persistBlock(b *Block) {
-	db.SaveBlock(b.Hash, utils.ToBytes(b))
+	dbStorage.SaveBlock(b.Hash, utils.ToBytes(b))
 }
 
 func (b *Block) restore(data []byte) {
@@ -31,7 +30,7 @@ func (b *Block) restore(data []byte) {
 
 // FindBlock is find a block
 func FindBlock(hash string) (*Block, error) {
-	blockBytes := db.Block(hash)
+	blockBytes := dbStorage.FindBlock(hash)
 	if blockBytes == nil {
 		return nil, errors.New("block not found")
 	}
@@ -63,8 +62,8 @@ func createBlock(prevHash string, height, diff int) *Block {
 		Difficulty: diff,
 		Nonce:      0,
 	}
-	block.mine()
 	block.Transactions = Mempool().TxToConfirm()
+	block.mine()
 	persistBlock(&block)
 	return &block
 }

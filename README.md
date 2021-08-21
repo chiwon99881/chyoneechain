@@ -202,3 +202,12 @@
 - #68 Go Test Part 7 (TDD Test)
 
   > interface를 이용하여 test파일과 실제 go파일간에 원하는 결과를 처리해주기
+
+- #69 Interface Power (adpater pattern)
+
+  > interface를 통해서 구현하고자 하는 func을 정의해놓고 그 func의 signature를 그대로 사용하여 type또는 struct가 구현하면
+  > test파일에서 임의의 struct를 같은 interface를 구현하여 테스트를 자유롭게 할 수 있음 왜그러냐면 테스트 파일에서는 실제 db에 접근하기를 원하는 건 아님
+  > 그저 db에 접근을 통해서 가져오는 block, saveBlock, ... 등등을 가지고 우리가 구현한 코드를 검증하기위함인데
+  > db에 접근하고 싶지 않기 때문에 fake struct를 같은 interface를 구현하여 가 데이터를 가져오고 지우고 하기만을 원함
+  > 이게 첫번째 interface의 힘이고 두번째는 interface를 사용하면 추후에 다른 db를 사용한다한들 구현한 func외에 다른 파일을 수정할 필요가 없음
+  > 그저 새로운 struct를 통해서 새로운 db에 대한 func만 구현해주면 됨 즉, 이와 같은 시그니쳐(dbStorage.findBlock)는 영원히 변하지 않을거란 얘기

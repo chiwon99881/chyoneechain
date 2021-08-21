@@ -15,6 +15,28 @@ const (
 	checkpoint   = "checkpoint"
 )
 
+type DB struct{}
+
+func (DB) FindBlock(hash string) []byte {
+	return findBlock(hash)
+}
+
+func (DB) SaveBlock(hash string, data []byte) {
+	saveBlock(hash, data)
+}
+
+func (DB) DeleteAllBlock() {
+	emptyBlocks()
+}
+
+func (DB) SaveChain(data []byte) {
+	saveChain(data)
+}
+
+func (DB) LoadChain() []byte {
+	return loadChain()
+}
+
 var db *bolt.DB
 
 func getDbName() string {
@@ -23,7 +45,7 @@ func getDbName() string {
 }
 
 // DB initialize
-func DB() *bolt.DB {
+func InitDB() {
 	if db == nil {
 		// Open creates and opens a database at the given path.
 		// If the file does not exist then it will be created automatically.
@@ -38,17 +60,16 @@ func DB() *bolt.DB {
 		})
 		utils.HandleError(err)
 	}
-	return db
 }
 
 // Close is function of close database
 func Close() {
-	DB().Close()
+	db.Close()
 }
 
 // SaveBlock is saved of block in blockchain DB
-func SaveBlock(hash string, data []byte) {
-	err := DB().Update(func(t *bolt.Tx) error {
+func saveBlock(hash string, data []byte) {
+	err := db.Update(func(t *bolt.Tx) error {
 		bucket := t.Bucket([]byte(blocksBucket))
 		err := bucket.Put([]byte(hash), data)
 		return err
@@ -57,8 +78,8 @@ func SaveBlock(hash string, data []byte) {
 }
 
 // SaveBlockchain is saved of chain in blockchain DB
-func SaveBlockchain(data []byte) {
-	err := DB().Update(func(t *bolt.Tx) error {
+func saveChain(data []byte) {
+	err := db.Update(func(t *bolt.Tx) error {
 		bucket := t.Bucket([]byte(dataBucket))
 		err := bucket.Put([]byte(checkpoint), data)
 		return err
@@ -67,9 +88,9 @@ func SaveBlockchain(data []byte) {
 }
 
 // Checkpoint is function of current blockchain pointer
-func Checkpoint() []byte {
+func loadChain() []byte {
 	var data []byte
-	DB().View(func(t *bolt.Tx) error {
+	db.View(func(t *bolt.Tx) error {
 		bucket := t.Bucket([]byte(dataBucket))
 		data = bucket.Get([]byte(checkpoint))
 		return nil
@@ -78,9 +99,9 @@ func Checkpoint() []byte {
 }
 
 // Block is function of get one block
-func Block(hash string) []byte {
+func findBlock(hash string) []byte {
 	var data []byte
-	DB().View(func(t *bolt.Tx) error {
+	db.View(func(t *bolt.Tx) error {
 		bucket := t.Bucket([]byte(blocksBucket))
 		data = bucket.Get([]byte(hash))
 		return nil
@@ -89,8 +110,8 @@ func Block(hash string) []byte {
 }
 
 // EmptyBlocks is function of delete bucket and data
-func EmptyBlocks() {
-	DB().Update(func(t *bolt.Tx) error {
+func emptyBlocks() {
+	db.Update(func(t *bolt.Tx) error {
 		utils.HandleError(t.DeleteBucket([]byte(blocksBucket)))
 		_, err := t.CreateBucket([]byte(blocksBucket))
 		utils.HandleError(err)
