@@ -213,3 +213,5 @@
   > 그저 새로운 struct를 통해서 새로운 db에 대한 func만 구현해주면 됨 즉, 이와 같은 시그니쳐(dbStorage.findBlock)는 영원히 변하지 않을거란 얘기
 
 - #70 Go Test Part 8 (CreateBlock func)
+
+- #71 Go Test Part 9 (Blockchain and handling how can we sync.Once)
