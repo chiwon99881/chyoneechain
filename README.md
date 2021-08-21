@@ -211,3 +211,5 @@
   > db에 접근하고 싶지 않기 때문에 fake struct를 같은 interface를 구현하여 가 데이터를 가져오고 지우고 하기만을 원함
   > 이게 첫번째 interface의 힘이고 두번째는 interface를 사용하면 추후에 다른 db를 사용한다한들 구현한 func외에 다른 파일을 수정할 필요가 없음
   > 그저 새로운 struct를 통해서 새로운 db에 대한 func만 구현해주면 됨 즉, 이와 같은 시그니쳐(dbStorage.findBlock)는 영원히 변하지 않을거란 얘기
+
+- #70 Go Test Part 8 (CreateBlock func)
